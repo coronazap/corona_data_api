@@ -20,12 +20,26 @@ def bot():
     # msg.body(string) -> Returns a text message 
 
     # msg.media(media_url) -> Returns a media 
-    if 'ping' in incoming_message: 
-        msg.body('Pong!') 
-        responded = True 
+    if 'dados' in incoming_message: 
+        # GET request for the updated data 
+        r = requests.get('https://pomber.github.io/covid19/timeseries.json') 
+
+        if r.status_code == 200: 
+            data = r.json() 
+            # Get brazilian data 
+            brazilData = data["Brazil"] 
+
+            # Generate response
+            response = "Até o momento, no *Brasil*, temos os seguintes casos: \n \n - Confirmados: " + \
+                            str(brazilData[-1]['confirmed']) + " \n - Óbitos: " + \
+                            str(brazilData[-1]['deaths']) + " \n - Recuperados: " + \
+                            str(brazilData[-1]['recovered'])
+
+        msg.body(response)
+        responded = True
     
     if not responded: 
-        msg.body('Diga ping!')
+        msg.body('Infelizmente, *por enquanto*, só posso te oferecer dados! \n \n Se quiser visualizá-los, envie "Dados".')
 
     return(str(resp))
 
