@@ -3,7 +3,7 @@ import scrapy
 
 class WorldOMeterSpider(scrapy.Spider):
     name = 'WorldOMeter'
-    allowed_domains = ['worldometers.info']
+    allowed_domains = ['https://www.worldometers.info/coronavirus/']
     start_urls = ['https://www.worldometers.info/coronavirus/']
 
     def parse(self, response):
@@ -33,30 +33,18 @@ class WorldOMeterSpider(scrapy.Spider):
 
         # Get table data 
         countries_data = response.css("table#main_table_countries_today tbody ::text").extract()
-        # print('Getted data')
-        # print(countries_data)
-        # print(' ')
 
         # Clear data 
         countries_data = clear_data(countries_data)
-        # print('Cleared data')
-        # print(countries_data)
-        # print(' ')
 
         # Split table lines
         countries_data = split(countries_data, 11 )
-        # print('Splitted data')
-        # print(countries_data)
-        # print(' ')
 
         # Remove initial empty cells 
         countries_data = [ item[2:] for item in countries_data]
-        # print('Formatted data')
-        # print(countries_data)
-        # print(' ')
 
         for item in countries_data: 
-            self.results[item[0]] = {
+            self.results[item[0].lower()] = {
                 'total_cases': item[1], 
                 'new_cases': item[2], 
                 'total_deaths': item[3], 
