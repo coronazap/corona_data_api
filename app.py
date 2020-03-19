@@ -2,6 +2,7 @@ from flask import Flask, request
 from scrapy.crawler import CrawlerRunner 
 from spiders import WorldOMeterSpider
 from db_creator import create_data_db 
+from stats_query import name_query
 import atexit
 import json
 from multiprocessing import Process, Queue
@@ -26,22 +27,25 @@ def run_spider():
     p = Process(target=f) 
     p.start()
 
-    create_data_db(results)
-
 
 @app.route('/data/<string:country_name>', methods=['GET'])
 def get_country_data(country_name): 
     # Call funcion that makes a query to the databse            
 
-    return country_name
+    query_result = {} 
 
+    query_result[country_name.upper()] = json.loads(name_query(country_name))[0]
 
+    return query_result
+ 
 if __name__ == '__main__':
     print('STARTING APPLICATION')
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(func=run_spider, trigger="interval", seconds=20) 
-    scheduler.start()
+    # scheduler = BackgroundScheduler()
+    # scheduler.add_job(func=run_spider, trigger="interval", seconds=60000) 
+    # scheduler.start()
     
-    atexit.register(lambda: scheduler.shutdown())
+    run_spider()
+
+    # atexit.register(lambda: scheduler.shutdown())
     app.run(debug=True)
 
