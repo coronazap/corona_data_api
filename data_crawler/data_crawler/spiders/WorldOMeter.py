@@ -70,5 +70,5 @@ class WorldometerSpider(scrapy.Spider):
                 'total_cases_per_million': item[8] 
             }
 
-        yield countries_dict['China']
+        yield countries_dict
                 
