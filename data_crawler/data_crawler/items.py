@@ -10,5 +10,7 @@ import scrapy
 
 class DataCrawlerItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
+    cases = scrapy.Field()
+    deaths = scrapy.Field() 
+    recovered = scrapy.Field()
     pass
