@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from data_crawler.items import DataCrawlerItem
-
+import json 
 class WorldometerSpider(scrapy.Spider):
     name = 'WorldOMeter'
     allowed_domains = ['https://www.worldometers.info/coronavirus/']
@@ -69,6 +69,11 @@ class WorldometerSpider(scrapy.Spider):
                 'serious_critical': item[7], 
                 'total_cases_per_million': item[8] 
             }
+        #countries_dict
+        data_json = json.dumps(countries_dict)
+        f = open("data.json","w")
+        f.write(data_json)
+        f.close()
+        
 
-        yield countries_dict
                 
