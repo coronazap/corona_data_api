@@ -11,7 +11,7 @@ def name_query(name):
             RETURN properties(n)
             """,{"value": name})
 
-    properties_dict = [row for row in properties][0]
+    properties_dict = [row for row in properties]
     properties_json = json.dumps(properties_dict)
 
     return properties_json

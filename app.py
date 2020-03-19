@@ -34,7 +34,12 @@ def get_country_data(country_name):
 
     query_result = {} 
 
-    query_result[country_name.upper()] = json.loads(name_query(country_name))[0]
+    results = json.loads(name_query(country_name))
+    
+    query_result[country_name.upper()] = results
+
+    if len(query_result[country_name.upper()]) == 0: 
+        return 'Não há casos de COVID-19 neste país.'
 
     return query_result
  
