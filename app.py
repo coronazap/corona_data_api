@@ -1,7 +1,7 @@
 from flask import Flask, request 
 from scrapy.crawler import CrawlerRunner 
 from spiders import WorldOMeterSpider
-from database.db_creator import create_data_db 
+from db_creator import create_data_db 
 import atexit
 import json
 from multiprocessing import Process, Queue
