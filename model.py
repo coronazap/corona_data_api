@@ -7,8 +7,9 @@ from config import config
 driver = GraphDatabase.driver( config['neo4j']['address'],  auth=basic_auth( config['neo4j']['user'], config['neo4j']['password']) )
 sess = driver.session()
 
-def update_db(data_dict, source_dict):
+def update_data(data_dict):
     sess = driver.session()
+
     for country in data_dict:
         sess.run("""\
             UNWIND {features} AS data
@@ -23,12 +24,17 @@ def update_db(data_dict, source_dict):
             SET a.total_cases_per_million = toInt(data.total_cases_per_million)
             """,{"name":country, "features": data_dict[country]})
 
+    sess.close()
+
+def update_source(source_dict):
+    sess = driver.session() 
+
     sess.run("""\
-        UNWIND {features} AS data
-        MERGE (a:Source {name: {name}})
-        SET a.link = data.link 
-        SET a.last_updated = data.last_updated
-        """, { "name": source_dict.name, "features": source_dict })
+        MERGE (s:Source {name: {name}})
+        SET s.link = {link}
+        SET s.last_updated = {last_updated}
+        """,{"name":source_dict['name'], "last_updated": source_dict['last_updated'], "link": source_dict['link']})
+    print('Saved')
 
     sess.close()
 

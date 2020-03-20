@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from model import update_db
+from model import update_data, update_source
 from utils import split_array, clear_data, empty_for_zero
 from countries import get_pt_name
 
@@ -9,10 +9,13 @@ class WorldOMeterSpider(scrapy.Spider):
     allowed_domains = ['worldometers.info']
     start_urls = ['https://www.worldometers.info/coronavirus/']
 
-
     def parse(self, response):    
         # Get table data 
         countries_data = response.css("table#main_table_countries_today tbody ::text").extract()
+        last_updated = response.css("div.content-inner div:nth-child(n+2) ::text").extract()[1]
+        
+        last_updated = last_updated.split(': ')[1]
+
         # Clear data 
         countries_data = clear_data(countries_data)
         # Swap empty for zero
@@ -25,12 +28,9 @@ class WorldOMeterSpider(scrapy.Spider):
         
         results = {}   
 
-        print(len(countries_data))
-
         i = 0
         for item in countries_data:
             pt_name = get_pt_name(item[0])
-
             results[pt_name] = {
                 'total_cases': item[1].replace(',',''), 
                 'new_cases': item[2].replace(',',''), 
@@ -43,9 +43,16 @@ class WorldOMeterSpider(scrapy.Spider):
             } 
             i += 1
         
-        print(i)
+        source_dict = {}
+
+        source_dict = {
+            'name': 'WorldOMeter', 
+            'link': 'https://www.worldometers.info/coronavirus/',
+            'last_updated': last_updated
+        }
         # Save data to neo4j 
-        update_db(results)
+        update_data(results)
+        update_source(source_dict)
 
         
 

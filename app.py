@@ -36,8 +36,6 @@ def get_country_data(country_name):
 
     results = json.loads(get_by_name(country_name))       
 
-    print(results)
-
     if len(results) == 0: 
         return 'Não há casos de COVID-19 neste país.'
     
@@ -60,7 +58,6 @@ def get_data():
 
  
 if __name__ == '__main__':
-    print('STARTING APPLICATION')
     run_spider()
     # scheduler = BackgroundScheduler()
     # scheduler.add_job(func=run_spider, trigger="interval", seconds=28800) 
