@@ -1,7 +1,6 @@
 # Coronazap API 
 
-API para consulta dos dados a respeito do COVID-19 em 185 países que alimenta o WhatsAppBot (Coronazap)['http://coronazap.guru/'].
-
+API para consulta dos dados a respeito do COVID-19 em 185 países que alimenta o WhatsAppBot [Coronazap]('http://coronazap.guru/'). 
 
 ## Request & Response Examples 
 
@@ -85,4 +84,6 @@ API para consulta dos dados a respeito do COVID-19 em 185 países que alimenta o
 
 ## Comunidade 
 
-Uma iniciativa OpenSource (Nindoo)['http://nindoo.ai/]
+Quer colaborar? [Coronazap on GitHub]('https://github.com/coronazap')
+
+Uma iniciativa OpenSource [Nindoo]('http://nindoo.ai/)
