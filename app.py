@@ -27,6 +27,7 @@ def run_spider():
 
     p = Process(target=f) 
     p.start()
+    p.stop()
 
 
 @app.route('/api/<string:country_name>', methods=['GET'])
@@ -67,10 +68,10 @@ def get_data():
 
  
 if __name__ == '__main__':
-    #run_spider()
-    #scheduler = BackgroundScheduler()
-    #scheduler.add_job(func=run_spider, trigger="interval", seconds=3600) 
-    #scheduler.start()
+    run_spider()
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(func=run_spider, trigger="interval", seconds=3600) 
+    scheduler.start()
     
 
     # atexit.register(lambda: scheduler.shutdown())
