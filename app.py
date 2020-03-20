@@ -27,7 +27,6 @@ def run_spider():
 
     p = Process(target=f) 
     p.start()
-    p.stop()
 
 
 @app.route('/api/<string:country_name>', methods=['GET'])
