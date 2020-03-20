@@ -5,7 +5,7 @@ import os
 from scrapy.crawler import CrawlerRunner 
 from spiders import WorldOMeterSpider
 
-from model import get_by_name 
+from model import get_by_name, get_all
 
 import atexit
 import json
@@ -42,9 +42,23 @@ def get_country_data(country_name):
     if len(results) == 0: 
         return 'Não há casos de COVID-19 neste país.'
     
-    query_result[country_name.upper()] = results[0]
+    query_result[country_name.upper()] = results[0][0]
 
     return jsonify(query_result)
+
+
+@app.route('/data', methods=['GET']) 
+def get_data(): 
+
+    query_result = {} 
+
+    results = json.loads(get_all())
+
+    for item in results: 
+        query_result[item[0]['name'].upper()] = item[0]
+
+    return jsonify(query_result)
+
  
 if __name__ == '__main__':
     print('STARTING APPLICATION')
