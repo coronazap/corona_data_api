@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from model import update_db
+from utils import split_array, clear_data, empty_for_zero
 
 class WorldOMeterSpider(scrapy.Spider):
     name = 'WorldOMeter'
@@ -9,51 +10,15 @@ class WorldOMeterSpider(scrapy.Spider):
 
     results = {}
 
-    def parse(self, response):
-
-        def split(array, size): 
-            # Splits an array into multiples arrays of size "size" 
-            arrays = [] 
-            while len(array) > size: 
-                piece = array[:size] 
-                arrays.append(piece) 
-                array = array[size:] 
-            arrays.append(array)
-            return arrays
-
-        def clear_data(array): 
-            # Remove linebreaks and empty spaces from array 
-            new_array = [] 
-            for i, item in enumerate(array):
-                
-                if '\n' not in item: 
-                    # Remove empty spaces from cell value 
-                    new_array.append(item.replace(' ', '')) 
-                elif '\n' in item and '\n' in array[i - 1]:
-                    if i < len(array) - 1 and 'Total' not in array[i + 1]: 
-                        new_array.append('0')
-            return new_array
-
-        def empty_for_zero(array): 
-            new_array = []
-            for item in array: 
-                if item == '': 
-                    new_array.append('0') 
-                else: 
-                    new_array.append(item)             
-            return new_array
-
+    def parse(self, response):    
         # Get table data 
         countries_data = response.css("table#main_table_countries_today tbody ::text").extract()
-        
         # Clear data 
         countries_data = clear_data(countries_data)
-        
         # Swap empty for zero
         countries_data = empty_for_zero(countries_data)
-
         # Split table lines
-        countries_data = split(countries_data, 11 )
+        countries_data = split_array(countries_data, 11 )
 
         # Remove initial empty cells 
         countries_data = [ item[2:] for item in countries_data]
@@ -70,6 +35,7 @@ class WorldOMeterSpider(scrapy.Spider):
                 'total_cases_per_million': item[8].replace(',','')
             } 
 
+        # Save data to neo4j 
         create_data_db(results)
 
         
