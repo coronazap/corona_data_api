@@ -25,6 +25,9 @@ class WorldOMeterSpider(scrapy.Spider):
         
         results = {}   
 
+        print(len(countries_data))
+
+        i = 0
         for item in countries_data:
             pt_name = get_pt_name(item[0])
 
@@ -38,7 +41,9 @@ class WorldOMeterSpider(scrapy.Spider):
                 'serious_critical': item[7].replace(',',''), 
                 'total_cases_per_million': item[8].replace(',','')
             } 
-
+            i += 1
+        
+        print(i)
         # Save data to neo4j 
         update_db(results)
 
