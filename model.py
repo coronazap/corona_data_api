@@ -41,8 +41,8 @@ def update_source(source_dict):
 def get_by_name(name):
     sess = driver.session()
     properties = sess.run(""" 
-            MATCH (n:Country {name:{value}}) 
-            RETURN properties(n)
+            MATCH (n:Country {name:{value}}), (s:Source)
+            RETURN properties(n), properties(s)
             """,{"value": name})
 
     sess.close()
@@ -50,14 +50,13 @@ def get_by_name(name):
     properties_dict = [row for row in properties]
     properties_json = json.dumps(properties_dict)
 
-    return properties_json
-
+    return properties_json 
 
 def get_all():
     sess = driver.session()
     database = sess.run("""
-            MATCH (n:Country)
-            RETURN properties(n)
+            MATCH (n:Country), (s:Source)
+            RETURN properties(n), properties(s)
             """)
     database_dict = [row for row in database]
     database_json = json.dumps(database_dict)

@@ -34,12 +34,17 @@ def get_country_data(country_name):
 
     query_result = {} 
 
+    query_result['data'] = {}
+
     results = json.loads(get_by_name(country_name))       
+
+    print(results)
 
     if len(results) == 0: 
         return 'Não há casos de COVID-19 neste país.'
     
-    query_result[country_name.upper()] = results[0][0]
+    query_result['data'][country_name.upper()] = results[0][0]
+    query_result['_source'] = results[0][1]
 
     return jsonify(query_result)
 
@@ -49,10 +54,15 @@ def get_data():
 
     query_result = {} 
 
+    query_result['data'] = {}
+
     results = json.loads(get_all())
 
+
     for item in results: 
-        query_result[item[0]['name'].upper()] = item[0]
+        query_result['data'][item[0]['name'].upper()] = item[0]
+
+    query_result['_source'] = results[0][1]
 
     return jsonify(query_result)
 
