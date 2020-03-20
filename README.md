@@ -1,12 +1,12 @@
 # Coronazap API 
 
-API para consulta dos dados a respeito do COVID-19 em 185 países que alimenta o WhatsAppBot [Coronazap]('http://coronazap.guru/'). 
+API para consulta dos dados a respeito do COVID-19 em 185 países que alimenta o WhatsAppBot [Coronazap](http://coronazap.guru/). 
 
 ## Request & Response Examples 
 
 ### GET /api 
 
-['http://cororazap-api.azurewebsites.net/api']('http://cororazap-api.azurewebsites.net/api')
+[http://cororazap-api.azurewebsites.net/api](http://cororazap-api.azurewebsites.net/api)
 
 
 ```
@@ -57,7 +57,7 @@ API para consulta dos dados a respeito do COVID-19 em 185 países que alimenta o
 
 ## GET /api/{país} 
 
-['http://cororazap-api.azurewebsites.net/api/mundo']('http://cororazap-api.azurewebsites.net/api/mundo')
+[http://cororazap-api.azurewebsites.net/api/mundo](http://cororazap-api.azurewebsites.net/api/mundo)
 
 
 ``` 
@@ -84,6 +84,6 @@ API para consulta dos dados a respeito do COVID-19 em 185 países que alimenta o
 
 ## Comunidade 
 
-Quer colaborar? [Coronazap on GitHub]('https://github.com/coronazap')
+Quer colaborar? [Coronazap on GitHub](https://github.com/coronazap)
 
-Uma iniciativa OpenSource [Nindoo]('http://nindoo.ai/)
+Uma iniciativa OpenSource [Nindoo](http://nindoo.ai/)
