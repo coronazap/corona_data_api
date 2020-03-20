@@ -15,12 +15,9 @@ from twisted.internet import reactor
 from apscheduler.schedulers.background import BackgroundScheduler 
 
 app = Flask(__name__) 
-app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 def run_spider(): 
-
     # Start the crawler 
-
     def f(): 
         runner = CrawlerRunner()
         deferred = runner.crawl(WorldOMeterSpider ) 
@@ -38,6 +35,8 @@ def get_country_data(country_name):
     query_result = {} 
 
     results = json.loads(get_by_name(country_name))       
+
+    print(results)
 
     if len(results) == 0: 
         return 'Não há casos de COVID-19 neste país.'
@@ -62,11 +61,11 @@ def get_data():
  
 if __name__ == '__main__':
     print('STARTING APPLICATION')
+    run_spider()
     # scheduler = BackgroundScheduler()
-    # scheduler.add_job(func=run_spider, trigger="interval", seconds=60000) 
+    # scheduler.add_job(func=run_spider, trigger="interval", seconds=28800) 
     # scheduler.start()
     
-    run_spider()
 
     # atexit.register(lambda: scheduler.shutdown())
     app.run(debug=True)

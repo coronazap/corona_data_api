@@ -4,10 +4,11 @@ import json
 from config import config 
 
 ### rodar da pasta spiders: scrapy runspider WorldOMeter.py
-driver = GraphDatabase.driver( config['neo4j']['address'],  auth=basic_auth( config['neo4j']['user'], config['neo4j']['password']))
+driver = GraphDatabase.driver( config['neo4j']['address'],  auth=basic_auth( config['neo4j']['user'], config['neo4j']['password']) )
 sess = driver.session()
 
 def update_db(data_dict):
+    sess = driver.session()
     for country in data_dict:
         sess.run("""\
             UNWIND {features} AS data
@@ -21,14 +22,17 @@ def update_db(data_dict):
             SET a.serious_critical = toInt(data.serious_critical)
             SET a.total_cases_per_million = toInt(data.total_cases_per_million)
             """,{"name":country, "features": data_dict[country]})
+
     sess.close()
 
-
 def get_by_name(name):
+    sess = driver.session()
     properties = sess.run(""" 
             MATCH (n:Country {name:{value}}) 
             RETURN properties(n)
             """,{"value": name})
+
+    sess.close()
 
     properties_dict = [row for row in properties]
     properties_json = json.dumps(properties_dict)
@@ -37,12 +41,15 @@ def get_by_name(name):
 
 
 def get_all():
+    sess = driver.session()
     database = sess.run("""
             MATCH (n:Country)
             RETURN properties(n)
             """)
     database_dict = [row for row in database]
     database_json = json.dumps(database_dict)
+
+
+    sess.close()
+
     return database_json
-
-
