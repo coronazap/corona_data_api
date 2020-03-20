@@ -2,6 +2,10 @@
 
 API para consulta dos dados a respeito do COVID-19 em 185 países que alimenta o WhatsAppBot [Coronazap](http://coronazap.guru/). 
 
+## Fonte de Dados 
+
+Os dados são extraídos três vezes por dia do site (WorldOMeter)[https://www.worldometers.info/coronavirus/].
+
 ## Request & Response Examples 
 
 ### GET /api 
