@@ -1,5 +1,0 @@
-scrapy
-flask
-neo4j-python-driver 
-requests
-twilio
