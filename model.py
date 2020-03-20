@@ -36,8 +36,13 @@ def get_by_name(name):
     return properties_json
 
 
-def get_all(): 
+def get_all():
+    database = sess.run("""
+            MATCH (n:Country)
+            RETURN properties(n)
+            """)
+    database_dict = [row for row in database]
+    database_json = json.dumps(database_dict)
+    return database_json
 
-    # Returns the data for all countries 
-    pass
 
