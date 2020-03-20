@@ -28,7 +28,7 @@ def run_spider():
     p.start()
 
 
-@app.route('/data/<string:country_name>', methods=['GET'])
+@app.route('/api/<string:country_name>', methods=['GET'])
 def get_country_data(country_name): 
     # Call funcion that makes a query to the databse            
 
@@ -49,7 +49,7 @@ def get_country_data(country_name):
     return jsonify(query_result)
 
 
-@app.route('/data', methods=['GET']) 
+@app.route('/api', methods=['GET']) 
 def get_data(): 
 
     query_result = {} 
