@@ -1,13 +1,13 @@
 from neo4j import GraphDatabase, basic_auth
 import scrapy
 import json
-import os
+from config import config 
 
 ### rodar da pasta spiders: scrapy runspider WorldOMeter.py
-driver = GraphDatabase.driver( "bolt://192.168.0.30:7687",  auth=basic_auth("neo4j", "nindoo123"))
+driver = GraphDatabase.driver( config['neo4j']['address'],  auth=basic_auth( config['neo4j']['user'], config['neo4j']['password']))
 sess = driver.session()
 
-def create_data_db(data_dict):
+def update_db(data_dict):
     for country in data_dict:
         sess.run("""\
             UNWIND {features} AS data
@@ -23,4 +23,21 @@ def create_data_db(data_dict):
             """,{"name":country, "features": data_dict[country]})
     sess.close()
 
-##node do tipo (sintoma,etc) -> node contexto, transformar cada c
+
+def get_by_name(name):
+    properties = sess.run(""" 
+            MATCH (n:Country {name:{value}}) 
+            RETURN properties(n)
+            """,{"value": name})
+
+    properties_dict = [row for row in properties]
+    properties_json = json.dumps(properties_dict)
+
+    return properties_json
+
+
+def get_all(): 
+
+    # Returns the data for all countries 
+    pass
+

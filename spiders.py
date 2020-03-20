@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from db_creator import create_data_db
+from model import update_db
 
 class WorldOMeterSpider(scrapy.Spider):
     name = 'WorldOMeter'
     allowed_domains = ['worldometers.info']
     start_urls = ['https://www.worldometers.info/coronavirus/']
+
+    results = {}
 
     def parse(self, response):
 
@@ -57,7 +59,7 @@ class WorldOMeterSpider(scrapy.Spider):
         countries_data = [ item[2:] for item in countries_data]
         
         for item in countries_data:
-            self.results[item[0].lower()] = {
+            results[item[0].lower()] = {
                 'total_cases': item[1].replace(',',''), 
                 'new_cases': item[2].replace(',',''), 
                 'total_deaths': item[3].replace(',',''), 
@@ -68,7 +70,7 @@ class WorldOMeterSpider(scrapy.Spider):
                 'total_cases_per_million': item[8].replace(',','')
             } 
 
-        create_data_db(self.results)
+        create_data_db(results)
 
         
 

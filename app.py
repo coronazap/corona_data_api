@@ -1,8 +1,12 @@
-from flask import Flask, request 
+from flask import Flask, request, jsonify
+import os 
+
+# Scrapy
 from scrapy.crawler import CrawlerRunner 
 from spiders import WorldOMeterSpider
-from db_creator import create_data_db 
-from stats_query import name_query
+
+from model import get_by_name 
+
 import atexit
 import json
 from multiprocessing import Process, Queue
@@ -11,16 +15,15 @@ from twisted.internet import reactor
 from apscheduler.schedulers.background import BackgroundScheduler 
 
 app = Flask(__name__) 
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 def run_spider(): 
-    # Start the crawler 
 
-    print('RUNNING SPIDER')
-    results = {}
+    # Start the crawler 
 
     def f(): 
         runner = CrawlerRunner()
-        deferred = runner.crawl(WorldOMeterSpider, results=results) 
+        deferred = runner.crawl(WorldOMeterSpider ) 
         deferred.addBoth(lambda _: reactor.stop()) 
         reactor.run()
 
@@ -34,14 +37,14 @@ def get_country_data(country_name):
 
     query_result = {} 
 
-    results = json.loads(name_query(country_name))
-    
-    query_result[country_name.upper()] = results
+    results = json.loads(get_by_name(country_name))       
 
-    if len(query_result[country_name.upper()]) == 0: 
+    if len(results) == 0: 
         return 'Não há casos de COVID-19 neste país.'
+    
+    query_result[country_name.upper()] = results[0]
 
-    return query_result
+    return jsonify(query_result)
  
 if __name__ == '__main__':
     print('STARTING APPLICATION')
