@@ -68,9 +68,9 @@ def get_data():
  
 if __name__ == '__main__':
     run_spider()
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(func=run_spider, trigger="interval", seconds=5) 
-    scheduler.start()
+    #scheduler = BackgroundScheduler()
+    #scheduler.add_job(func=run_spider, trigger="interval", seconds=5) 
+    #scheduler.start()
     
 
     # atexit.register(lambda: scheduler.shutdown())
