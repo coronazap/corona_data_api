@@ -20,7 +20,7 @@ def run_spider():
     # Start the crawler 
     def f(): 
         runner = CrawlerRunner()
-        deferred = runner.crawl(WorldOMeterSpider ) 
+        deferred = runner.crawl(WorldOMeterSpider) 
         deferred.addBoth(lambda _: reactor.stop()) 
         reactor.run()
 
