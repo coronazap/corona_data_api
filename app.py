@@ -71,7 +71,6 @@ if __name__ == '__main__':
     scheduler = BackgroundScheduler()
     scheduler.add_job(func=run_spider, trigger="interval", seconds=3600) 
     scheduler.start()
-    
 
     # atexit.register(lambda: scheduler.shutdown())
     app.run(debug=True)
