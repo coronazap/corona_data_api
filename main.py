@@ -72,11 +72,11 @@ def get_data():
 
 run_spider()
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=run_spider, trigger="interval", seconds=5) 
+scheduler.add_job(func=run_spider, trigger="interval", seconds=600) 
 scheduler.start()
-
+atexit.register(lambda: scheduler.shutdown())
 
 if __name__ == '__main__':
-    # atexit.register(lambda: scheduler.shutdown())
+    # 
     app.run(debug=True)
 
