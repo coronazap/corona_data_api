@@ -8,7 +8,7 @@ import os
 from scrapy.crawler import CrawlerRunner 
 from spiders import WorldOMeterSpider
 
-from model import get_by_name, get_all
+from model import Neo4J
 
 import atexit
 import json
@@ -19,12 +19,14 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__) 
 
+db = Neo4J() 
+
 def run_spider(): 
     # Start the crawler 
 
     def f(): 
         runner = CrawlerRunner()
-        deferred = runner.crawl(WorldOMeterSpider) 
+        deferred = runner.crawl(WorldOMeterSpider, db=db) 
         deferred.addBoth(lambda _: reactor.stop()) 
         reactor.run()
 
@@ -40,7 +42,7 @@ def get_country_data(country_name):
 
     query_result['data'] = {}
 
-    results = json.loads(get_by_name(country_name))       
+    results = json.loads(db.get_by_name(country_name))       
 
     if len(results) == 0: 
         return 'Não há casos de COVID-19 neste país.'
@@ -58,7 +60,7 @@ def get_data():
 
     query_result['data'] = {}
 
-    results = json.loads(get_all())
+    results = json.loads(db.get_all())
 
 
     for item in results: 

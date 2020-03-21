@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from model import update_data, update_source
 from utils import split_array, clear_data, empty_for_zero
 from countries import get_pt_name
 
@@ -54,8 +53,8 @@ class WorldOMeterSpider(scrapy.Spider):
             'last_updated': last_updated
         }
         # Save data to neo4j 
-        update_data(results)
-        update_source(source_dict)
+        db.update_data(results)
+        db.update_source(source_dict)
 
         
 
