@@ -6,7 +6,7 @@ import json
 from config import config 
 
 ### rodar da pasta spiders: scrapy runspider WorldOMeter.py
-driver = GraphDatabase.driver( config['neo4j']['address'],  auth=basic_auth( config['neo4j']['user'], config['neo4j']['password']) )
+driver = GraphDatabase.driver( config['neo4j']['address'],  auth=basic_auth( config['neo4j']['user'], config['neo4j']['password']), max_connection_lifetime=3600*24*30, keep_alive=True)
 sess = driver.session()
 
 def update_data(data_dict):
