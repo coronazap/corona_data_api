@@ -4,7 +4,7 @@ API para consulta dos dados a respeito do COVID-19 em 185 países que alimenta o
 
 ## Fonte de Dados 
 
-Os dados são extraídos a cada uma hora do site (WorldOMeter)[https://www.worldometers.info/coronavirus/].
+Os dados são extraídos a cada 10 minutos do site (WorldOMeter)[https://www.worldometers.info/coronavirus/].
 
 ## Request & Response Examples 
 
