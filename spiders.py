@@ -52,9 +52,10 @@ class WorldOMeterSpider(scrapy.Spider):
             'link': 'https://www.worldometers.info/coronavirus/',
             'last_updated': last_updated
         }
+
         # Save data to neo4j 
-        db.update_data(results)
-        db.update_source(source_dict)
+        self.db.update_data(results)
+        self.db.update_source(source_dict)
 
         
 
