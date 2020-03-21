@@ -27,9 +27,6 @@ class WorldOMeterSpider(scrapy.Spider):
         
         results = {}   
 
-
-        print('CRAWLEANDO')
-
         i = 0
         for item in countries_data:
             pt_name = get_pt_name(item[0])

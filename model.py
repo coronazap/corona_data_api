@@ -31,20 +31,24 @@ class Neo4J(object):
                 """,{"name":country, "features": data_dict[country]})
 
         sess.close()
+        
+        self.close()
 
     def update_source(self, source_dict):
+        self.__init__()
         sess = self.driver.session() 
-
         sess.run("""\
             MERGE (s:Source {name: {name}})
             SET s.link = {link}
             SET s.last_updated = {last_updated}
             """,{"name":source_dict['name'], "last_updated": source_dict['last_updated'], "link": source_dict['link']})
-        print('Saved')
 
         sess.close()
+        
+        self.close()
 
     def get_by_name(self, name):
+        self.__init__()
         sess = self.driver.session()
         properties = sess.run(""" 
                 MATCH (n:Country {name:{value}}), (s:Source)
@@ -55,10 +59,13 @@ class Neo4J(object):
 
         properties_dict = [row for row in properties]
         properties_json = json.dumps(properties_dict)
+        
+        self.close()
 
         return properties_json 
 
     def get_all(self):
+        self.__init__()
         sess = self.driver.session()
 
         database = sess.run("""
@@ -70,5 +77,6 @@ class Neo4J(object):
         database_json = json.dumps(database_dict)
 
         sess.close()
+        self.close()
 
         return database_json
