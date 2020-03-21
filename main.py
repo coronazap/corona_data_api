@@ -69,12 +69,14 @@ def get_data():
     return jsonify(query_result)
 
  
-if __name__ == '__main__':
-    run_spider()
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(func=run_spider, trigger="interval", seconds=60) 
-    scheduler.start()
 
+run_spider()
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=run_spider, trigger="interval", seconds=5) 
+scheduler.start()
+
+
+if __name__ == '__main__':
     # atexit.register(lambda: scheduler.shutdown())
     app.run(debug=True)
 
