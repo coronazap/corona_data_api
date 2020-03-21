@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 def split_array(array, size): 
     # Splits an array into multiples arrays of size "size" 
     arrays = [] 

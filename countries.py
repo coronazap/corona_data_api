@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from unicodedata import normalize 
 
 countries = [(1, 'AFEGANISTÃO', 'AFGHANISTAN'),
