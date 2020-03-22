@@ -8,7 +8,7 @@ import os
 from scrapy.crawler import CrawlerRunner 
 from spiders import WorldOMeterSpider
 
-from model import Neo4J
+from model import Neo4j # , get_all, get_by_name, update_data, update_source
 
 import atexit
 import json
@@ -19,14 +19,19 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__) 
 
-db = Neo4J() 
+global db 
 
 def run_spider(): 
+    db = Neo4j()
     # Start the crawler 
-
+    def on_complete(results, source_dict): 
+        db.update_source(source_dict)
+        db.update_data(results)
+        db.close()
+    
     def f(): 
         runner = CrawlerRunner()
-        deferred = runner.crawl(WorldOMeterSpider, db=db) 
+        deferred = runner.crawl(WorldOMeterSpider, on_complete=on_complete) 
         deferred.addBoth(lambda _: reactor.stop()) 
         reactor.run()
 
@@ -36,8 +41,9 @@ def run_spider():
 
 @app.route('/api/<string:country_name>', methods=['GET'])
 def get_country_data(country_name): 
-    # Call funcion that makes a query to the databse            
-
+    # Call funcion that makes a query to the databse   
+    
+    db = Neo4j()      
     query_result = {} 
 
     query_result['data'] = {}
@@ -50,12 +56,14 @@ def get_country_data(country_name):
     query_result['data'][country_name.upper()] = results[0][0]
     query_result['_source'] = results[0][1]
 
+    db.close()
     return jsonify(query_result)
 
 
 @app.route('/api', methods=['GET']) 
 def get_data(): 
 
+    db = Neo4j()
     query_result = {} 
 
     query_result['data'] = {}
@@ -68,13 +76,12 @@ def get_data():
 
     query_result['_source'] = results[0][1]
 
+    db.close()
     return jsonify(query_result)
 
  
-
-run_spider()
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=run_spider, trigger="interval", seconds=600) 
+scheduler.add_job(func=run_spider, trigger="interval", seconds=5) 
 scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 

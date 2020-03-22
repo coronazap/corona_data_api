@@ -27,6 +27,7 @@ class WorldOMeterSpider(scrapy.Spider):
         
         results = {}   
 
+
         i = 0
         for item in countries_data:
             pt_name = get_pt_name(item[0])
@@ -50,9 +51,7 @@ class WorldOMeterSpider(scrapy.Spider):
             'last_updated': last_updated
         }
 
-        # Save data to neo4j 
-        self.db.update_data(results)
-        self.db.update_source(source_dict)
+        self.on_complete(results, source_dict)
 
         
 
