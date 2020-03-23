@@ -24,7 +24,7 @@ global db
 def run_spider(): 
     db = Neo4j()
     # Start the crawler 
-    def on_complete(results, source_dict): 
+    def on_complete(results, source_dict):
         db.update_source(source_dict)
         db.update_data(results)
         db.close()
@@ -79,11 +79,10 @@ def get_data():
     db.close()
     return jsonify(query_result)
 
- 
+run_spider()
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=run_spider, trigger="interval", seconds=600) 
+scheduler.add_job(func=run_spider, trigger="interval", seconds=5) 
 scheduler.start()
-atexit.register(lambda: scheduler.shutdown())
 
 if __name__ == '__main__':
     # 

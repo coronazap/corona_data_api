@@ -266,7 +266,8 @@ countries = [(1, 'AFEGANISTÃO', 'AFGHANISTAN'),
 (260, 'VATICANO', 'VATICAN CITY'), 
 (261, 'ILHAS DE SÃO MARTINHO', 'SINT MAARTEN'), 
 (262, 'Essuatíni', 'Eswatini'),
-(263, 'MUNDO', 'Total: ') ]
+(263, 'MUNDO', 'Total: ',
+(264, 'MYANMAR','BIRMÂNIA')) ]
 
 en_to_pt = {}
 
@@ -278,7 +279,10 @@ for item in countries:
 
 def get_pt_name(en_name): 
 
-    formatted_en_name = normalize('NFKD', en_name).encode('ASCII', 'ignore').decode('ASCII').lower()
-
-    return en_to_pt[formatted_en_name]
+    try:
+        formatted_en_name = normalize('NFKD', en_name).encode('ASCII', 'ignore').decode('ASCII').lower()       
+        return en_to_pt[formatted_en_name]
+    except: 
+        return 'others'
+        
     

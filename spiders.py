@@ -12,7 +12,7 @@ class WorldOMeterSpider(scrapy.Spider):
         # Get table data 
         countries_data = response.css("table#main_table_countries_today tbody ::text").extract()
         last_updated = response.css("div.content-inner div:nth-child(n+2) ::text").extract()[1]
-        
+
         last_updated = last_updated.split(': ')[1]
 
         # Clear data 
@@ -26,7 +26,6 @@ class WorldOMeterSpider(scrapy.Spider):
         countries_data = [ item[2:] for item in countries_data]
         
         results = {}   
-
 
         i = 0
         for item in countries_data:
