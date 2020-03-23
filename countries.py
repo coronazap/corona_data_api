@@ -1,7 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+import logging
 from unicodedata import normalize 
+
+logging.basicConfig(level=logging.CRITICAL)
 
 countries = [(1, 'AFEGANISTÃO', 'AFGHANISTAN'),
 (2, 'ACROTÍRI E DECELIA', 'AKROTIRI E DEKÉLIA'),
@@ -283,6 +285,7 @@ def get_pt_name(en_name):
         formatted_en_name = normalize('NFKD', en_name).encode('ASCII', 'ignore').decode('ASCII').lower()       
         return en_to_pt[formatted_en_name]
     except: 
+        logging.warning('Country' + en_name + ' not mapped.')
         return 'others'
         
     
