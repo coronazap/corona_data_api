@@ -19,14 +19,12 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__) 
 
-global db 
-
 def run_spider(): 
     db = Neo4j()
     # Start the crawler 
     def on_complete(results, source_dict):
-        db.update_source(source_dict)
         db.update_data(results)
+        db.update_source(source_dict)
         db.close()
     
     def f(): 
@@ -50,6 +48,7 @@ def get_country_data(country_name):
 
     results = json.loads(db.get_by_name(country_name))       
 
+    db.close()
     if len(results) == 0: 
         return 'Não há casos de COVID-19 neste país.'
     
@@ -70,18 +69,18 @@ def get_data():
 
     results = json.loads(db.get_all())
 
+    db.close()
 
     for item in results: 
         query_result['data'][item[0]['name'].upper()] = item[0]
 
     query_result['_source'] = results[0][1]
 
-    db.close()
     return jsonify(query_result)
 
 run_spider()
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=run_spider, trigger="interval", seconds=300) 
+scheduler.add_job(func=run_spider, trigger="interval", seconds=5) 
 scheduler.start()
 
 if __name__ == '__main__':

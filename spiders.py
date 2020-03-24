@@ -20,7 +20,7 @@ class WorldOMeterSpider(scrapy.Spider):
         # Swap empty for zero
         countries_data = empty_for_zero(countries_data)
         # Split table lines
-        countries_data = split_array(countries_data, 11 )
+        countries_data = split_array(countries_data, 12 )
 
         # Remove initial empty cells 
         countries_data = [ item[2:] for item in countries_data]
