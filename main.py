@@ -23,8 +23,8 @@ def run_spider():
     db = Neo4j()
     # Start the crawler 
     def on_complete(results, source_dict):
-        db.update_data(results)
         db.update_source(source_dict)
+        db.update_data(results)
         db.close()
     
     def f(): 
