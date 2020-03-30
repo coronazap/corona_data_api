@@ -26,7 +26,7 @@ def run_spider():
         db.update_source(source_dict)
         db.update_data(results)
         db.close()
-    
+            
     def f(): 
         runner = CrawlerRunner()
         deferred = runner.crawl(WorldOMeterSpider, on_complete=on_complete) 
@@ -80,7 +80,7 @@ def get_data():
 
 run_spider()
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=run_spider, trigger="interval", seconds=5) 
+scheduler.add_job(func=run_spider, trigger="interval", seconds=600) 
 scheduler.start()
 
 if __name__ == '__main__':
