@@ -6,4 +6,4 @@ neobolt==1.7.16
 requests==2.23.0
 scrapy==1.6.0
 twilio==6.36.0
-twisted==19.10.0
+twisted==22.1.0
